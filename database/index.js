@@ -1,14 +1,16 @@
-var mongoose = require('mongoose');
+/*eslint-disable*/
+const mongoose = require('mongoose');
+
 mongoose.connect('mongodb://user:access1@ds151612.mlab.com:51612/fit-together');
-var db = mongoose.connection;
-db.on('error', function() {
+const db = mongoose.connection;
+db.on('error', () => {
   console.log('mongoose connection error');
 });
-db.once('open', function() {
+db.once('open', () => {
   console.log('mongoose connected successfully');
 });
 
-var userSchema = mongoose.Schema({
+const userSchema = mongoose.Schema({
   name: String,
   password: String,
   image: String,
@@ -16,9 +18,9 @@ var userSchema = mongoose.Schema({
   email: String,
   zip: Number,
   interests: Array,
-  events: Array
+  events: Array,
 });
-var gameSchema = mongoose.Schema({
+const gameSchema = mongoose.Schema({
   name: String,
   type: String,
   description: String,
@@ -29,21 +31,21 @@ var gameSchema = mongoose.Schema({
   creator: String,
   players: Array,
   date: Date,
-  time: String
+  time: String,
 });
-var interestSchema = mongoose.Schema({
-  interest: String
+const interestSchema = mongoose.Schema({
+  interest: String,
 });
-var messageSchema = mongoose.Schema({
+const messageSchema = mongoose.Schema({
   user: String,
   game: String,
-  body: String
+  body: String,
 });
 
-var Interest = mongoose.model('Interest', interestSchema, 'interests');
-var Game = mongoose.model('Game', gameSchema, 'games');
-var Message = mongoose.model('Message', messageSchema, 'messages');
-var User = mongoose.model('User', userSchema, 'users');
+const Interest = mongoose.model('Interest', interestSchema, 'interests');
+const Game = mongoose.model('Game', gameSchema, 'games');
+const Message = mongoose.model('Message', messageSchema, 'messages');
+const User = mongoose.model('User', userSchema, 'users');
 
 
 module.exports.db = db;
