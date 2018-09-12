@@ -11,15 +11,40 @@ app.use(bodyParser.json())
 
 // app.use(express.static('client'));
 
-app.post('/user', (req, res) => {
-  console.log('posted');
-  db.addUser('Kenneth','Kenneth','kenneth.jpg',9859859859,'Kenneth@ken.neth',70019);
-  db.addUser('Cornelius','Cornelius','cornelius.jpg',5045045045,'Cornelius@ken.neth',70002);  
+//ADD USER
+app.post('/signup', (req, res) => {
+  db.getUserByName([USERNAME], (user) => {
+    if(user){
+      res.send('There is already a user with that name');
+    } else {
+      db.addUser([USERNAME], [PASSWORD], [IMGPATH], [PHONE], [EMAIL], [ZIP])
+      res.send('User added to database');
+    }
+  })
 })
 
-app.post('/game', (req, res) => {
-  console.log('posted');
-  db.addGame('pickup sticks', 'extreme sports', 'gonna rock your socks off', '123 almonaster', 'new orleans', 'la', 70170, 'cornelius', 3/13/2019, 1);
+//ADD GAME
+app.post('/createGame', (req, res) => {
+  db.getGameByName([GAMENAME], (game) => {
+    if(game){
+      res.send('There is already an event with that name')
+    } else {
+      db.addGame([GAMENAME], [TYPE], [DESCRIPTION], [STREET], [CITY], [STATE], [ZIP], [CREATOR], [DATE], [TIME]);
+      res.send('Game saved to database')
+    }
+  })
+})
+
+//ADD PLAYER TO GAME
+app.post('/joinGame', (req, res) => {
+  db.getPlayerFromGame([USERNAME], [GAMENAME], (player) => {
+    if(player){
+      res.send('You are already signed up for this event')
+    } else {
+      db.addPlayerToGame([USERNAME], [GAMENAME]);
+      res.send('You have expressed interest')
+    }
+  })
 })
 
 app.post('/add', (req, res) => {
@@ -34,23 +59,6 @@ app.post('/messageKenneth', (req, res) => {
   db.addMessage('Kenneth', 'three on three', 'You dont even know')
 })
 
-//TEST add Kenneth and Cornelius 
-app.post('/corn', (req, res) => {
-  console.log('cornelius added')
-  db.addUser('Cornelius', 'Scarlet', 'token.jpg', 5046154481, 'cornelius@cornel.ius', 70002);
-  console.log('kenneth added');
-  db.addUser('Kenneth', 'Caitlin', 'token.jpg', 9857700249, 'Kenneth@kenn.eth', 70119);
-})
-//TEST add basketball game
-app.post('/ball', (req, res) => {
-  console.log('game added');
-  db.addGame('three on three', 'team sports', 'pickup game', '124 Almonaster', 'New Orleans', 'LA', 70125, 'Kenneth', 13032019, 1)
-})
-//TEST kenneth joins the game
-app.post('/join', (req, res) => {
-  console.log('kenneth is joining');
-  db.addPlayerToGame('Kenneth', 'three on three');
-})
 //TEST get all games for user kenneth
 app.get('/userGames', (req, res) => {
   db.getGamesForUser('Kenneth', (games) => {
@@ -70,9 +78,13 @@ app.get('/messages', (req, res) => {
   })
 })
 
-app.get('/userKenneth', (req, res) => {
-  db.getUserByName('kenneth', (user) => {
-    res.send(user);
+app.get('/userCole', (req, res) => {
+  db.getUserByName('Cole', (user) => {
+    if(user){
+      res.send(user);
+    } else {
+      res.send('No such user');
+    }
   })
 })
 module.exports = app;
