@@ -6,7 +6,6 @@
 	<div class="row">
 		<div class="col-md-9">
 			<table class="table">
-
 				<thead>
 					<tr>
 						<th>
@@ -23,7 +22,6 @@
 						</th>
 					</tr>
 				</thead>
-
 				<tbody>
 					<tr>
 						<td>
@@ -39,29 +37,24 @@
 							Default
 						</td>
 					</tr>
-					
 				</tbody>
-
 			</table>
 		</div>
 		<div class="col-md-3">
 			<form role="form">
 				<div class="form-group">
-					 
 					<label for="exampleInputEmail1">
 						Email address
 					</label>
 					<input type="email" class="form-control" id="exampleInputEmail1" />
 				</div>
 				<div class="form-group">
-					 
 					<label for="exampleInputPassword1">
 						Password
 					</label>
 					<input type="password" class="form-control" id="exampleInputPassword1" />
 				</div>
 				<div class="form-group">
-					 
 					<label for="exampleInputFile">
 						File input
 					</label>
@@ -71,17 +64,16 @@
 					</p>
 				</div>
 				<div class="checkbox">
-					 
 					<label>
 						<input type="checkbox" /> Check me out
 					</label>
-				</div> 
+				</div>
 				<button type="submit" class="btn btn-primary">
 					Submit
 				</button>
 			</form>
 		</div>
-	</div>
+</div>
 </div>
   </div>
 </template>

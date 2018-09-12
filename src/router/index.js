@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import HelloWorld from '@/components/HelloWorld';
 import PostsManager from '@/components/PostsManager';
 import Auth from '@okta/okta-vue';
+import store from '../store'
 
 Vue.use(Auth, {
   issuer: 'https://dev-127433.oktapreview.com/oauth2/default',

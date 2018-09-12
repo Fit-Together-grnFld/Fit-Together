@@ -11,6 +11,10 @@ Vue.use(BootstrapVue);
 
 Vue.config.productionTip = false;
 
+const token = localStorage.getItem('user-token')
+if (token) {
+  axios.defaults.headers.common['Authorization'] = token
+}
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
