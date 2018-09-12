@@ -86,9 +86,21 @@ const addPlayerToGame = function (userName, gameName) {
 
 };
 
+const getPlayerFromGame = function (userName, gameName, callback) {
+  Game.findOne({ name: gameName }, (err, game) => {
+    if(err){
+      console.log(err)
+    } else {
+      let players = game.players;
+      if(players.includes(userName)){
+        callback(userName);
+      }
+    }
+  })
+}
 
 //Get game by name
-const getGameByName = function (gameName, callback){
+const getGameByName = function (gameName, callback) {
   Game.findOne({ name: gameName }, function(err, game){
     if(err){
       return handleError(err);
@@ -142,3 +154,4 @@ module.exports.addInterestToPlayer = addInterestToPlayer;
 module.exports.addMessage = addMessage;
 module.exports.getGameMessages = getGameMessages;
 module.exports.getUserByName = getUserByName;
+module.exports.getPlayerFromGame = getPlayerFromGame;
