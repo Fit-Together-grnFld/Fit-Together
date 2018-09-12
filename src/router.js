@@ -1,8 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import LoginComponent from "./views/login.vue"
-import SecureComponent from "./views/secure.vue"
-
+import homePage from "./views/homePage.vue"
+import signUp from "./views/signUp.vue"
+//create signup
+// creat add event 
+// game page 
+// user page 
+// create game page
+//
 Vue.use(Router)
 
 export default new Router({
@@ -19,9 +25,15 @@ export default new Router({
       component: LoginComponent
     },
     {
-      path: "/secure",
-      name: "secure",
-      component: SecureComponent
+      path: "/home",
+      name: "home",
+      component: homePage
+    },
+    {
+      path: "/signUp",
+      name: "signUp",
+      component: signUp
     }
+
   ]
 })

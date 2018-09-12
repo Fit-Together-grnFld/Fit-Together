@@ -4,6 +4,7 @@
         <input type="text" name="username" v-model="input.username" placeholder="Username" />
         <input type="password" name="password" v-model="input.password" placeholder="Password" />
         <button type="button" v-on:click="login()">Login</button>
+        <router-link to="./signUp" class="btn btn-link">Register</router-link>
     </div>
 </template>
 
