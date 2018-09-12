@@ -34,15 +34,28 @@ const addGame = function (name, type, description, street, city, state, zip, cre
   });
 };
 
+//add message to game
+const addMessage = function(user, game, body){
+  let message = new Message({
+    user, game, body
+  });
+  message.save((err)=>{
+    if(err) {
+      return handleError(err);
+    }
+    console.log('message posted');
+  })
+}
+
 //create interest
 const addInterestToPlayer = function (userName, interest) {
-  User.updateOne({ name: userName }, { $push: { interests: interest }}), (err) => {
+  User.updateOne({ name: userName }, { $push: { interests: interest }}, (err) => {
     if(err) {
       return handleError(err);
     } else {
       console.log('interest added');
     }
-  }
+  })
 };
 
 // User can express interest in a game
@@ -54,21 +67,22 @@ const addPlayerToGame = function (userName, gameName) {
     console.log('player added to game');
     }
   })
-  User.updateOne({ name: userName }, { $push: { events: gameName }}, (err) => {
+  .then(User.updateOne({ name: userName }, { $push: { events: gameName }}, (err) => {
     if(err) {
       return handleError(err);
     } else {
-      console('game added for player');
+      console.log('game added for player');
     }
-  })
-  Game.find({ name: gameName }, (err, game) => {
+  }))
+  .then(Game.findOne({ name: gameName }, (err, game) => {
     if(err){
       return handleError(err);
     } else {
       let interest = game.type;
+      console.log(interest);
       addInterestToPlayer(userName, interest);
     }
-  })
+  }))
 
 };
 
@@ -84,21 +98,40 @@ const getGameByName = function (gameName, callback){
   })
 }
 
+//Get user by name
+const getUserByName = function (userName, callback){
+  User.findOne({ name: userName }, (err, user) => {
+    if(err){
+      console.log(err)
+    } else {
+      callback(user);
+    }
+  })
+}
+
 // Get all events that a user has signed up for
 const getGamesForUser = function (userName, callback) {
-  const games = [];
-  User.findOne({ name: userName }, function(err, user){
+  User.findOne({ name: userName }, (err, user) => {
     if(err){
       return handleError(err);
     } else {
-      User.events.forEach(event => {
-        let push = getGameByName(event);
-        games.push(push);
-      })
+      let happenings = user.events;
+      callback(happenings)
     }
-  })
-  callback(games);
+  })  
 };
+
+//Get all the messages for a game
+const getGameMessages = function(gameName, callback) {
+  Message.find({ game: gameName }, (err, messages) => {
+    if(err){
+      console(err)
+    } else {
+      callback(messages);
+    }
+  });
+}
+
 
 module.exports.addUser = addUser;
 module.exports.addGame = addGame;
@@ -106,3 +139,6 @@ module.exports.addPlayerToGame = addPlayerToGame;
 module.exports.getGameByName = getGameByName;
 module.exports.getGamesForUser = getGamesForUser;
 module.exports.addInterestToPlayer = addInterestToPlayer;
+module.exports.addMessage = addMessage;
+module.exports.getGameMessages = getGameMessages;
+module.exports.getUserByName = getUserByName;
