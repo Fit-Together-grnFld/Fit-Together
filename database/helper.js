@@ -36,13 +36,13 @@ const addGame = function (name, type, description, street, city, state, zip, cre
 
 //create interest
 const addInterestToPlayer = function (userName, interest) {
-  User.updateOne({ name: userName }, { $push: { interests: interest }}), (err) => {
+  User.updateOne({ name: userName }, { $push: { interests: interest }}, (err) => {
     if(err) {
       return handleError(err);
     } else {
       console.log('interest added');
     }
-  }
+  })
 };
 
 // User can express interest in a game
@@ -54,21 +54,22 @@ const addPlayerToGame = function (userName, gameName) {
     console.log('player added to game');
     }
   })
-  User.updateOne({ name: userName }, { $push: { events: gameName }}, (err) => {
+  .then(User.updateOne({ name: userName }, { $push: { events: gameName }}, (err) => {
     if(err) {
       return handleError(err);
     } else {
-      console('game added for player');
+      console.log('game added for player');
     }
-  })
-  Game.find({ name: gameName }, (err, game) => {
+  }))
+  .then(Game.findOne({ name: gameName }, (err, game) => {
     if(err){
       return handleError(err);
     } else {
       let interest = game.type;
+      console.log(interest);
       addInterestToPlayer(userName, interest);
     }
-  })
+  }))
 
 };
 
@@ -86,18 +87,14 @@ const getGameByName = function (gameName, callback){
 
 // Get all events that a user has signed up for
 const getGamesForUser = function (userName, callback) {
-  const games = [];
-  User.findOne({ name: userName }, function(err, user){
+  User.findOne({ name: userName }, (err, user) => {
     if(err){
       return handleError(err);
     } else {
-      User.events.forEach(event => {
-        let push = getGameByName(event);
-        games.push(push);
-      })
+      let happenings = user.events;
+      callback(happenings)
     }
-  })
-  callback(games);
+  })  
 };
 
 module.exports.addUser = addUser;
