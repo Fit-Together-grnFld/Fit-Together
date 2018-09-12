@@ -34,6 +34,19 @@ const addGame = function (name, type, description, street, city, state, zip, cre
   });
 };
 
+//add message to game
+const addMessage = function(user, game, body){
+  let message = new Message({
+    user, game, body
+  });
+  message.save((err)=>{
+    if(err) {
+      return handleError(err);
+    }
+    console.log('message posted');
+  })
+}
+
 //create interest
 const addInterestToPlayer = function (userName, interest) {
   User.updateOne({ name: userName }, { $push: { interests: interest }}, (err) => {
@@ -85,6 +98,17 @@ const getGameByName = function (gameName, callback){
   })
 }
 
+//Get user by name
+const getUserByName = function (userName, callback){
+  User.findOne({ name: userName }, (err, user) => {
+    if(err){
+      console.log(err)
+    } else {
+      callback(user);
+    }
+  })
+}
+
 // Get all events that a user has signed up for
 const getGamesForUser = function (userName, callback) {
   User.findOne({ name: userName }, (err, user) => {
@@ -97,9 +121,24 @@ const getGamesForUser = function (userName, callback) {
   })  
 };
 
+//Get all the messages for a game
+const getGameMessages = function(gameName, callback) {
+  Message.find({ game: gameName }, (err, messages) => {
+    if(err){
+      console(err)
+    } else {
+      callback(messages);
+    }
+  });
+}
+
+
 module.exports.addUser = addUser;
 module.exports.addGame = addGame;
 module.exports.addPlayerToGame = addPlayerToGame;
 module.exports.getGameByName = getGameByName;
 module.exports.getGamesForUser = getGamesForUser;
 module.exports.addInterestToPlayer = addInterestToPlayer;
+module.exports.addMessage = addMessage;
+module.exports.getGameMessages = getGameMessages;
+module.exports.getUserByName = getUserByName;

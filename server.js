@@ -26,6 +26,14 @@ app.post('/add', (req, res) => {
   console.log('posted');
   db.addPlayerToGame('Kenneth', 'pickup sticks');
 })
+app.post('/messageCornelius', (req, res) => {
+  db.addMessage('Cornelius', 'three on three', 'We gonna get it')
+})
+
+app.post('/messageKenneth', (req, res) => {
+  db.addMessage('Kenneth', 'three on three', 'You dont even know')
+})
+
 //TEST add Kenneth and Cornelius 
 app.post('/corn', (req, res) => {
   console.log('cornelius added')
@@ -44,11 +52,27 @@ app.post('/join', (req, res) => {
   db.addPlayerToGame('Kenneth', 'three on three');
 })
 //TEST get all games for user kenneth
-app.get('/user', (req, res) => {
+app.get('/userGames', (req, res) => {
   db.getGamesForUser('Kenneth', (games) => {
-    console.log(games);
     res.send(games);
   })
 })
+//TEST get a game by it's name
+app.get('/game', (req,res) => {
+  db.getGameByName('three on three', (game) => {
+    res.send(game);
+  })
+})
+//TEST get all messages for a game
+app.get('/messages', (req, res) => {
+  db.getGameMessages('three on three', (messages) => {
+    res.send(messages);
+  })
+})
 
+app.get('/userKenneth', (req, res) => {
+  db.getUserByName('kenneth', (user) => {
+    res.send(user);
+  })
+})
 module.exports = app;
