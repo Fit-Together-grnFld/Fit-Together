@@ -8,12 +8,12 @@
 </template>
 
 <script>
-    export default {
-        name: 'Secure',
-        data() {
-            return {};
-        }
-    }
+export default {
+  name: 'Secure',
+  data() {
+    return {};
+  },
+};
 </script>
 
 <style scoped>
