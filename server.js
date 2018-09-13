@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./database/helper.js');
-// const port = process.env.PORT || 3000;
+const bcrypt = require('bcrypt');
 const app = express()
 // app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
@@ -17,8 +17,16 @@ app.post('/signup', (req, res) => {
     if(user){
       res.send('There is already a user with that name');
     } else {
-      db.addUser([USERNAME], [PASSWORD], [IMGPATH], [PHONE], [EMAIL], [ZIP])
-      res.send('User added to database');
+      bcrypt.hash([PASSWORD], 10, function(err, hash) {
+        // Store hash in your password DB.
+        if(err){
+          console.log(err);
+        } else {
+          db.addUser([USERNAME], hash, [IMGPATH], [PHONE], [EMAIL], [ZIP])
+          res.send('User added to database');
+        }
+      });
+      
     }
   })
 })
@@ -47,16 +55,55 @@ app.post('/joinGame', (req, res) => {
   })
 })
 
-app.post('/add', (req, res) => {
-  console.log('posted');
-  db.addPlayerToGame('Kenneth', 'pickup sticks');
-})
-app.post('/messageCornelius', (req, res) => {
-  db.addMessage('Cornelius', 'three on three', 'We gonna get it')
+//LOGIN
+app.get('/login', (req, res) => {
+  let inputPassword;
+  bcrypt.hash([PASSWORD], 10, function(err, hash) {
+    // Store hash in your password DB.
+    if(err){
+      console.log(err);
+    } else {
+      inputPassword = hash;
+    }
+  })
+  .then(db.getPasswordFromUser([USERNAME], (pass) => {
+    bcrypt.compare(pass, hash, function(err, res) {
+      if(err){
+        console.log(err)
+      } else {
+        res.render([HOMEPAGE]);
+      }
+    });
+  }))
 })
 
-app.post('/messageKenneth', (req, res) => {
-  db.addMessage('Kenneth', 'three on three', 'You dont even know')
+//SEND A MESSAGE
+app.post('/message', (req, res) => {
+  db.addMessage([USERNAME], [GAME], [MESSAGEBODY])
+})
+
+//GET ALL INFO FOR ONE USER
+app.get('/user', (req, res) => {
+  db.getUserByName([USERNAME], (err, user) => {
+    if(err){
+      console.log(err)
+    } else {
+      console.log('User Found')
+      res.send(user);
+    }
+  })
+})
+
+//GET ALL INFO ON A GAME
+app.get('/game', (req, res) => {
+  db.getGameByName([GAMENAME], (err, game) => {
+    if(err){
+      console.log(err)
+    } else {
+      console.log('Game Found');
+      res.send(game);
+    }
+  })
 })
 
 //TEST get all games for user kenneth

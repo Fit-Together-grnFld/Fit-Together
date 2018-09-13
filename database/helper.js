@@ -86,6 +86,19 @@ const addPlayerToGame = function (userName, gameName) {
 
 };
 
+//Get a player's password
+const getPasswordFromUser = function(userName, callback) {
+  User.findOne({ name: userName }, (err, user) => {
+    if(err){
+      console.log(err)
+    } else {
+      let password = user.password;
+      callback(password);
+    }
+  })
+}
+
+//Find a player if they are involved with a game
 const getPlayerFromGame = function (userName, gameName, callback) {
   Game.findOne({ name: gameName }, (err, game) => {
     if(err){
@@ -155,3 +168,4 @@ module.exports.addMessage = addMessage;
 module.exports.getGameMessages = getGameMessages;
 module.exports.getUserByName = getUserByName;
 module.exports.getPlayerFromGame = getPlayerFromGame;
+module.exports.getPasswordFromUser = getPasswordFromUser;
