@@ -3,6 +3,10 @@ const bodyParser = require('body-parser');
 const db = require('./database/helper.js');
 // const port = process.env.PORT || 3000;
 const app = express()
+const proxy = require('express-http-proxy');
+
+
+// app.use('/proxy', proxy('http://localhost:8080'));
 // app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 
@@ -12,7 +16,7 @@ app.use(bodyParser.json())
 // app.use(express.static('client'));
 
 //ADD USER
-app.post('/signup', (req, res) => {
+app.post('signup', (req, res) => {
   db.getUserByName([USERNAME], (user) => {
     if(user){
       res.send('There is already a user with that name');

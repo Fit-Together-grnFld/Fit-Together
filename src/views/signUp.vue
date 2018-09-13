@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'signUp',
   data() {
@@ -50,7 +52,15 @@ export default {
   },
   methods: {
     signUp() {
-        
+        axios.post('localhost:3000/signup', {
+    name: 'parmesian'
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
     },
   },
 };
