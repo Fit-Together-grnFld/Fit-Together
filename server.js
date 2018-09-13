@@ -106,32 +106,13 @@ app.get('/game', (req, res) => {
   })
 })
 
-//TEST get all games for user kenneth
-app.get('/userGames', (req, res) => {
-  db.getGamesForUser('Kenneth', (games) => {
-    res.send(games);
-  })
-})
-//TEST get a game by it's name
-app.get('/game', (req,res) => {
-  db.getGameByName('three on three', (game) => {
-    res.send(game);
-  })
-})
-//TEST get all messages for a game
-app.get('/messages', (req, res) => {
-  db.getGameMessages('three on three', (messages) => {
-    res.send(messages);
-  })
+//TEST incoming data
+app.get('/test', (req, res) => {
+  if(err){
+    console.log(err)
+  } else {
+    res.send('success!');
+  }
 })
 
-app.get('/userCole', (req, res) => {
-  db.getUserByName('Cole', (user) => {
-    if(user){
-      res.send(user);
-    } else {
-      res.send('No such user');
-    }
-  })
-})
 module.exports = app;
